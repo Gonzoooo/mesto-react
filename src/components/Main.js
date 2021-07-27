@@ -1,7 +1,8 @@
 import React from "react";
 import buttonAdd from '../images/Addbutton.svg';
 import buttonEdit from '../images/Editbutton.svg';
-import api from "../utils/Api";
+import api from "../utils/api";
+import Card from "./Card";
 
 function Main(props) {
     const [userName, setUserName] = React.useState({});
@@ -16,13 +17,22 @@ function Main(props) {
                 setUserAvatar(data.avatar);
                 setUserDescription(data.about);
             })
-    }, [userName, userAvatar, userDescription]);
+    }, []);
+
+    const [cards, setCards] = React.useState([]);
+
+    React.useEffect(() => {
+        api.getInitialCards()
+            .then(data => {
+                console.log(data);
+                setCards(data);
+            })
+    },[]);
 
     return (
-        <div className="Main">
-            <main className="content">
+        <main className="content">
 
-                <section className="profile">
+            <section className="profile">
                     <button className="profile__avatar-button" onClick={props.onEditAvatar}/>
                     <img src={userAvatar} className="profile__avatar" alt="Аватар"/>
                     <div className="profile__info">
@@ -34,21 +44,12 @@ function Main(props) {
                     <button type="button" className="profile__add-button" onClick={props.onAddPlace}><img src={buttonAdd} alt='Кнопка добавления'/></button>
                 </section>
 
-                <div className="elements">
-                    <template className="element">
-                        <div className="element__container">
-                            <button aria-label="Trash" type="button" className="element__trash"/><img className="element__img" alt='Урна'/>
-                            <div className="element__group">
-                                <h2 className="element__text"/>
-                                <button aria-label="Like" type="button" className="element__like"/>
-                                <div className="element__like-count">0</div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-
-            </main>
-        </div>
+            <ul className="elements">
+                {cards.map((card) => (
+                <Card name={card.name} link={card.link} likes={card.likes.length} key={card._id} onCardClick={props.onCardClick} card={card}/>
+                ))}
+            </ul>
+        </main>
     );
 }
 

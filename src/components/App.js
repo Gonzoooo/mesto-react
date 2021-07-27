@@ -4,14 +4,12 @@ import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import PopupWithForm from "./PopupWithForm";
-import api from "../utils/Api";
 
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-    const [isInfo, setInfo] = React.useState({});
 
     function handleEditAvatarClick(){
         setEditAvatarPopupOpen(true);
@@ -31,51 +29,6 @@ function App() {
         setEditAvatarPopupOpen(false);
     }
 
-    function handlePopupUserName(data){
-        api.updateUserInfo({
-            name: data.name
-        })
-            .then((data) => {
-                PopupWithForm.userName(data);
-            })
-            .then(()=> {
-                closeAllPopups();
-            })
-            .catch((e) => {
-                console.log(`ошибка при изменении данных: ${e}`);
-            });
-    }
-
-    function handlePopupUserDescription(data){
-        api.updateUserInfo({
-            about: data.about,
-        })
-            .then((data) => {
-                PopupWithForm.userDescription(data);
-            })
-            .then(()=> {
-                closeAllPopups();
-            })
-            .catch((e) => {
-                console.log(`ошибка при изменении данных: ${e}`);
-            });
-    }
-
-    function handlePopupUserAvatar(avatar){
-        api.addNewAvatar({
-            avatar: avatar.avatar
-        })
-            .then((avatar) =>{
-                PopupWithForm.userName(avatar);
-            })
-            .then(() => {
-                closeAllPopups();
-            })
-            .catch((e) => {
-                console.log(`ошибка при изменении аватара: ${e}`);
-            });
-    }
-
     return (
         <body className="page">
             <Header />
@@ -83,9 +36,6 @@ function App() {
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
-                userAvatar={isInfo ? handlePopupUserAvatar:''}
-                userName={handlePopupUserName}
-                userDescription={handlePopupUserDescription}
             />
             <Footer />
             <>

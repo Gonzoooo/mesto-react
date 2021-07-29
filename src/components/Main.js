@@ -5,9 +5,9 @@ import api from "../utils/api";
 import Card from "./Card";
 
 function Main(props) {
-    const [userName, setUserName] = React.useState({});
-    const [userAvatar, setUserAvatar] = React.useState({});
-    const [userDescription, setUserDescription] = React.useState({});
+    const [userName, setUserName] = React.useState();
+    const [userAvatar, setUserAvatar] = React.useState();
+    const [userDescription, setUserDescription] = React.useState();
 
     React.useEffect(() => {
         api.getUserInfo()
@@ -17,6 +17,9 @@ function Main(props) {
                 setUserAvatar(data.avatar);
                 setUserDescription(data.about);
             })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
     }, []);
 
     const [cards, setCards] = React.useState([]);
@@ -27,6 +30,9 @@ function Main(props) {
                 console.log(data);
                 setCards(data);
             })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
     },[]);
 
     return (

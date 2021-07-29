@@ -7,7 +7,7 @@ function ImagePopup(props){
             <div className="overlay"/>
             <div className="form form_show-image">
                 <button aria-label="Close" type="button" onClick={props.onClose} className="form__close-icon form__close-icon_for_img"><img src={buttonClose} className="form__close" alt="Крестик закрытия окна"/></button>
-                <img src={props.card.link} className="form__img" alt='Картинка' onClick={props.card}/>
+                <img src={props.card.link} className="form__img" alt={props.card.name}/>
                 <h2 className="form__title form__title_zoom">{props.card.name}</h2>
             </div>
         </div>

@@ -8,30 +8,19 @@ function Main(props) {
     const [userName, setUserName] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
-
-    React.useEffect(() => {
-        api.getUserInfo()
-            .then(data => {
-                setUserName(data.name);
-                setUserAvatar(data.avatar);
-                setUserDescription(data.about);
-            })
-            .catch((e) => {
-                console.log(`ошибка при загрузке данных: ${e}`);
-            });
-    }, []);
-
     const [cards, setCards] = React.useState([]);
 
-    React.useEffect(() => {
-        api.getInitialCards()
-            .then(data => {
-                setCards(data);
-            })
-            .catch((e) => {
-                console.log(`ошибка при загрузке данных: ${e}`);
-            });
-    },[]);
+    Promise.all([
+        api.getUserInfo(),
+        api.getInitialCards(),
+    ]).then(([info, cards]) => {
+        setUserName(info.name);
+        setUserAvatar(info.avatar);
+        setUserDescription(info.about);
+        setCards(cards);
+    }).catch((e) => {
+        console.log(`ошибка при загрузке данных: ${e}`);
+    });
 
     return (
         <main className="content">
@@ -50,7 +39,7 @@ function Main(props) {
 
             <ul className="elements">
                 {cards.map((card) => (
-                <Card name={card.name} link={card.link} likes={card.likes.length} key={card._id} onCardClick={props.onCardClick} card={card}/>
+                <Card name={card} link={card} likes={card} key={card._id} onCardClick={props.onCardClick} card={card}/>
                 ))}
             </ul>
         </main>

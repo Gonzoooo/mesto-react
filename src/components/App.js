@@ -48,12 +48,12 @@ function App() {
             />
             <Footer />
 
-            <PopupWithForm name='new-avatar' title='Обновить аватар' value='Сохранить' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+            <PopupWithForm name='new-avatar' title='Обновить аватар' submitBtnText='Сохранить' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
                     <div className="input input_type_new-avatar">
                         <input id="popup__input_avatar_link" required className="popup__input popup__input_avatar_link" type="url" name="avatar" placeholder="Ссылка на аватар"/>
                     </div>
                 </PopupWithForm>
-            <PopupWithForm name='edit-profile' title='Редактировать профиль' value='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+            <PopupWithForm name='edit-profile' title='Редактировать профиль' submitBtnText='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
                     <div className="input input_type_edit-profile">
                         <input id="popup__input_text_name" required className="popup__input popup__input_text_name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя"/>
                         <span id="popup__input_text_name--error"/>
@@ -61,7 +61,7 @@ function App() {
                         <span id="popup__input_text_job--error"/>
                     </div>
                 </PopupWithForm>
-            <PopupWithForm name='add-card' title='Новое место' value='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+            <PopupWithForm name='add-card' title='Новое место' submitBtnText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
                     <div className="input input_type_add-card">
                         <input id="popup__input_place_name" required className="popup__input popup__input_place_name" type="text" name="name" placeholder="Название"/>
                         <span id="popup__input_place_name--error"/>
@@ -69,7 +69,7 @@ function App() {
                         <span id="popup__input_place_link--error"/>
                     </div>
                 </PopupWithForm>
-            <PopupWithForm name='delete-img' title='Вы уверены?' value='Да' />
+            <PopupWithForm name='delete-img' title='Вы уверены?' submitBtnText='Да' />
             <ImagePopup isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard}/>
 
         </div>

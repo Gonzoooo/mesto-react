@@ -5,14 +5,13 @@ import api from "../utils/api";
 import Card from "./Card";
 
 function Main(props) {
-    const [userName, setUserName] = React.useState();
-    const [userAvatar, setUserAvatar] = React.useState();
-    const [userDescription, setUserDescription] = React.useState();
+    const [userName, setUserName] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
 
     React.useEffect(() => {
         api.getUserInfo()
             .then(data => {
-                console.log(data);
                 setUserName(data.name);
                 setUserAvatar(data.avatar);
                 setUserDescription(data.about);
@@ -27,7 +26,6 @@ function Main(props) {
     React.useEffect(() => {
         api.getInitialCards()
             .then(data => {
-                console.log(data);
                 setCards(data);
             })
             .catch((e) => {
@@ -42,9 +40,9 @@ function Main(props) {
                     <button className="profile__avatar-button" onClick={props.onEditAvatar}/>
                     <img src={userAvatar} className="profile__avatar" alt="Аватар"/>
                     <div className="profile__info">
-                        <h1 className="profile__name">{`${userName}`}</h1>
+                        <h1 className="profile__name">{userName}</h1>
                         <button type="button" className="profile__edit-button" onClick={props.onEditProfile}><img src={buttonEdit} alt='Кнопка редактировани'/></button>
-                        <p className="profile__job">{`${userDescription}`}</p>
+                        <p className="profile__job">{userDescription}</p>
                     </div>
 
                     <button type="button" className="profile__add-button" onClick={props.onAddPlace}><img src={buttonAdd} alt='Кнопка добавления'/></button>

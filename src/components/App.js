@@ -4,6 +4,8 @@ import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import PopupWithForm from "./PopupWithForm";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from "../utils/api";
 
 
 function App() {
@@ -12,6 +14,18 @@ function App() {
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
+    const [currentUser, setCurrentUser] = React.useState('');
+
+
+    React.useEffect(() => {
+        api.getUserInfo()
+            .then(data => {
+                setCurrentUser(data);
+            })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
+    }, []);
 
     function handleCardClick(card){
         setSelectedCard(card);
@@ -38,7 +52,8 @@ function App() {
     }
 
     return (
-        <div className="page">
+        <CurrentUserContext.Provider value={currentUser}>
+          <div className="page">
             <Header />
             <Main
                 onEditAvatar={handleEditAvatarClick}
@@ -52,7 +67,7 @@ function App() {
                     <div className="input input_type_new-avatar">
                         <input id="popup__input_avatar_link" required className="popup__input popup__input_avatar_link" type="url" name="avatar" placeholder="Ссылка на аватар"/>
                     </div>
-                </PopupWithForm>
+            </PopupWithForm>
             <PopupWithForm name='edit-profile' title='Редактировать профиль' submitBtnText='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
                     <div className="input input_type_edit-profile">
                         <input id="popup__input_text_name" required className="popup__input popup__input_text_name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя"/>
@@ -60,7 +75,7 @@ function App() {
                         <input id="popup__input_text_job" required className="popup__input popup__input_text_job" type="text" name="about" value="Исследователь океана" placeholder="О себе"/>
                         <span id="popup__input_text_job--error"/>
                     </div>
-                </PopupWithForm>
+            </PopupWithForm>
             <PopupWithForm name='add-card' title='Новое место' submitBtnText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
                     <div className="input input_type_add-card">
                         <input id="popup__input_place_name" required className="popup__input popup__input_place_name" type="text" name="name" placeholder="Название"/>
@@ -68,11 +83,12 @@ function App() {
                         <input id="popup__input_place_link" required className="popup__input popup__input_place_link" type="url" name="link" placeholder="Ссылка на картинку"/>
                         <span id="popup__input_place_link--error"/>
                     </div>
-                </PopupWithForm>
+            </PopupWithForm>
             <PopupWithForm name='delete-img' title='Вы уверены?' submitBtnText='Да' />
             <ImagePopup isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard}/>
 
-        </div>
+          </div>
+        </CurrentUserContext.Provider>
     );
 }
 

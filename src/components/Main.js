@@ -1,23 +1,11 @@
 import React from "react";
 import buttonAdd from '../images/Addbutton.svg';
 import buttonEdit from '../images/Editbutton.svg';
-import api from "../utils/api";
 import Card from "./Card";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
-    const [cards, setCards] = React.useState([]);
     const currentUser = React.useContext(CurrentUserContext);
-    
-    React.useEffect(() => {
-        api.getInitialCards()
-            .then(data => {
-                setCards(data);
-            })
-            .catch((e) => {
-                console.log(`ошибка при загрузке данных: ${e}`);
-            });
-    },[]);
 
     return (
         <main className="content">

@@ -49,6 +49,16 @@ function App() {
             });
     }
 
+    function handleCardDelete(card) {
+        api.deleteCard(card._id)
+            .then(() => {
+                setCards((cards) => cards.filter((item) => item !== card));
+            })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
+    }
+
     function handleCardClick(card){
         setSelectedCard(card);
         setImagePopupOpen(true);
@@ -83,6 +93,7 @@ function App() {
                 onAddPlace={handleAddPlaceClick}
                 onCardClick={handleCardClick}
                 onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
                 cards={cards}
             />
             <Footer />

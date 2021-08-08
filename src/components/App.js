@@ -38,6 +38,17 @@ function App() {
             });
     }, []);
 
+    function handleCardLike(card) {
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        api.setLike(card._id, isLiked)
+            .then((newCard) => {
+                setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
+            })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
+    }
+
     function handleCardClick(card){
         setSelectedCard(card);
         setImagePopupOpen(true);
@@ -71,6 +82,7 @@ function App() {
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
                 onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
                 cards={cards}
             />
             <Footer />

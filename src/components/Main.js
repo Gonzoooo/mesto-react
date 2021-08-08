@@ -24,7 +24,7 @@ function Main(props) {
 
             <ul className="elements">
                 {props.cards.map((card) => (
-                <Card name={card} link={card} likes={card} key={card._id} onCardClick={props.onCardClick} card={card}/>
+                <Card onCardLike={props.onCardLike} name={card} link={card} likes={card} key={card._id} onCardClick={props.onCardClick} card={card}/>
                 ))}
             </ul>
         </main>

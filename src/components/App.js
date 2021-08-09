@@ -8,6 +8,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 
 function App() {
@@ -87,6 +88,19 @@ function App() {
             });
     }
 
+    function handleAddPlaceSubmit(newCard) {
+        api.addNewCard(newCard)
+            .then((newCard) => {
+                setCards([newCard, ...cards]);
+            })
+            .then(() => {
+                closeAllPopups();
+            })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
+    }
+
     function handleCardClick(card){
         setSelectedCard(card);
         setImagePopupOpen(true);
@@ -130,15 +144,10 @@ function App() {
 
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
 
-                <PopupWithForm name='add-card' title='Новое место' submitBtnText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
-                        <div className="input input_type_add-card">
-                            <input id="popup__input_place_name" required className="popup__input popup__input_place_name" type="text" name="name" placeholder="Название"/>
-                            <span id="popup__input_place_name--error"/>
-                            <input id="popup__input_place_link" required className="popup__input popup__input_place_link" type="url" name="link" placeholder="Ссылка на картинку"/>
-                            <span id="popup__input_place_link--error"/>
-                        </div>
-                </PopupWithForm>
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+
                 <PopupWithForm name='delete-img' title='Вы уверены?' submitBtnText='Да' />
+
                 <ImagePopup isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard}/>
 
             </div>

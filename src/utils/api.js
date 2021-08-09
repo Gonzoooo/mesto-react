@@ -42,7 +42,10 @@ class Api {
                 authorization: '0970556a-6f94-4e95-aaf4-193fd780acec',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name: info.name, about: info.about})
+            body: JSON.stringify({
+                name: info.name,
+                about: info.about
+            })
         })
             .then(this._handleResponse);
     }

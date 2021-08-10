@@ -4,7 +4,7 @@ import buttonClose from "../images/CloseIcon.svg";
 function PopupWithForm(props) {
     return (
             <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_visible':''}`}>
-                <div className="overlay"/>
+                <div className="overlay" onClick={props.onClose}/>
                 <form className="form" name={props.name} onSubmit={props.onSubmit} noValidate>
                     <button aria-label="Close" type="button" className="form__close-icon" onClick={props.onClose}>
                         <img src={buttonClose} className="form__close" alt="Крестик закрытия окна"/></button>

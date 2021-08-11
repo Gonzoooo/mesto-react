@@ -3,13 +3,12 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import DeletePlacePopup from "./DeletePlacePopup";
-
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -18,27 +17,29 @@ function App() {
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [isDeletePopupOpen, setDeletePopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
-    const [currentUser, setCurrentUser] = React.useState('');
-    const [cardToDelete, setCardToDelete] = React.useState('');
+    const [currentUser, setCurrentUser] = React.useState({});
+    const [cardToDelete, setCardToDelete] = React.useState({});
     const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
-        Promise.all([
-            api.getUserInfo(),
-            api.getInitialCards(),
-        ]).then(([info, cards]) => {
-            setCards(cards);
-            setCurrentUser(info);
-        }).catch((e) => {
-            console.log(`ошибка при загрузке данных: ${e}`);
-        });
+        Promise.all([api.getUserInfo(), api.getInitialCards()])
+            .then(([info, cards]) => {
+                setCards(cards);
+                setCurrentUser(info);
+            })
+            .catch((e) => {
+                console.log(`ошибка при загрузке данных: ${e}`);
+            });
     }, []);
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
-        api.setLike(card._id, isLiked)
+        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        api
+            .setLike(card._id, isLiked)
             .then((newCard) => {
-                setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
+                setCards((cards) =>
+                    cards.map((c) => (c._id === card._id ? newCard : c))
+                );
             })
             .catch((e) => {
                 console.log(`ошибка при загрузке данных: ${e}`);
@@ -46,7 +47,8 @@ function App() {
     }
 
     function handleCardDelete() {
-        api.deleteCard(cardToDelete._id)
+        api
+            .deleteCard(cardToDelete._id)
             .then(() => {
                 setCards((cards) => cards.filter((item) => item !== cardToDelete));
             })
@@ -59,7 +61,8 @@ function App() {
     }
 
     function handleUpdateUser(info) {
-        api.setUserInfo(info)
+        api
+            .setUserInfo(info)
             .then((info) => {
                 setCurrentUser(info);
             })
@@ -72,7 +75,8 @@ function App() {
     }
 
     function handleUpdateAvatar(avatar) {
-        api.addNewAvatar(avatar)
+        api
+            .addNewAvatar(avatar)
             .then((avatar) => {
                 setCurrentUser(avatar);
             })
@@ -85,7 +89,8 @@ function App() {
     }
 
     function handleAddPlaceSubmit(newCard) {
-        api.addNewCard(newCard)
+        api
+            .addNewCard(newCard)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
             })
@@ -97,29 +102,29 @@ function App() {
             });
     }
 
-    function handleDeleteCardClick(card){
+    function handleDeleteCardClick(card) {
         setDeletePopupOpen(true);
         setCardToDelete(card);
     }
 
-    function handleCardClick(card){
+    function handleCardClick(card) {
         setSelectedCard(card);
         setImagePopupOpen(true);
     }
 
-    function handleEditAvatarClick(){
+    function handleEditAvatarClick() {
         setEditAvatarPopupOpen(true);
     }
 
-    function handleEditProfileClick(){
+    function handleEditProfileClick() {
         setEditProfilePopupOpen(true);
     }
 
-    function handleAddPlaceClick(){
+    function handleAddPlaceClick() {
         setAddPlacePopupOpen(true);
     }
 
-    function closeAllPopups(){
+    function closeAllPopups() {
         setAddPlacePopupOpen(false);
         setEditProfilePopupOpen(false);
         setEditAvatarPopupOpen(false);
@@ -142,16 +147,35 @@ function App() {
                 />
                 <Footer />
 
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+                <EditAvatarPopup
+                    isOpen={isEditAvatarPopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateAvatar={handleUpdateAvatar}
+                />
 
-                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+                <EditProfilePopup
+                    isOpen={isEditProfilePopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateUser={handleUpdateUser}
+                />
 
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+                <AddPlacePopup
+                    isOpen={isAddPlacePopupOpen}
+                    onClose={closeAllPopups}
+                    onAddPlace={handleAddPlaceSubmit}
+                />
 
-                <DeletePlacePopup isOpen={isDeletePopupOpen} onClose={closeAllPopups} onDeletePlace={handleCardDelete}/>
+                <DeletePlacePopup
+                    isOpen={isDeletePopupOpen}
+                    onClose={closeAllPopups}
+                    onDeletePlace={handleCardDelete}
+                />
 
-                <ImagePopup isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard}/>
-
+                <ImagePopup
+                    isOpen={isImagePopupOpen}
+                    onClose={closeAllPopups}
+                    card={selectedCard}
+                />
             </div>
         </CurrentUserContext.Provider>
     );

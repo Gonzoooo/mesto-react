@@ -1,19 +1,40 @@
 import React from "react";
 import buttonClose from "../images/CloseIcon.svg";
 
-function PopupWithForm(props) {
+function PopupWithForm({name,isOpen,onSubmit,onClose,title,children,submitBtnText}) {
     return (
-            <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_visible':''}`}>
-                <div className="overlay" onClick={props.onClose}/>
-                <form className="form" name={props.name} onSubmit={props.onSubmit} noValidate>
-                    <button aria-label="Close" type="button" className="form__close-icon" onClick={props.onClose}>
-                        <img src={buttonClose} className="form__close" alt="Крестик закрытия окна"/></button>
-                    <h2 className="form__title">{props.title}</h2>
-                    {props.children}
-                    <button className="popup__submit-button" type="submit" name="button">{props.submitBtnText}</button>
-                </form>
-            </div>
-    )
+        <div
+            className={`popup popup_type_${name} ${
+                isOpen ? "popup_visible" : ""
+            }`}
+        >
+            <div className="overlay" onClick={onClose} />
+            <form
+                className="form"
+                name={name}
+                onSubmit={onSubmit}
+                noValidate
+            >
+                <button
+                    aria-label="Close"
+                    type="button"
+                    className="form__close-icon"
+                    onClick={onClose}
+                >
+                    <img
+                        src={buttonClose}
+                        className="form__close"
+                        alt="Крестик закрытия окна"
+                    />
+                </button>
+                <h2 className="form__title">{title}</h2>
+                {children}
+                <button className="popup__submit-button" type="submit" name="button">
+                    {submitBtnText}
+                </button>
+            </form>
+        </div>
+    );
 }
 
 export default PopupWithForm;

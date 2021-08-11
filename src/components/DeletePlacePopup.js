@@ -1,16 +1,22 @@
 import PopupWithForm from "./PopupWithForm";
 import React from "react";
 
-function DeletePlacePopup(props) {
-
+function DeletePlacePopup({onDeletePlace,isOpen,onClose}) {
     function handleSubmit(e) {
         e.preventDefault();
-        props.onDeletePlace();
+        onDeletePlace();
     }
 
-    return(
-        <PopupWithForm name='delete-img' title='Вы уверены?' submitBtnText='Да' onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose}/>
-    )
+    return (
+        <PopupWithForm
+            name="delete-img"
+            title="Вы уверены?"
+            submitBtnText="Да"
+            onSubmit={handleSubmit}
+            isOpen={isOpen}
+            onClose={onClose}
+        />
+    );
 }
 
 export default DeletePlacePopup;
